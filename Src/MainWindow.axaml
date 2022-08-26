@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:imerge="clr-namespace:x0.imerge"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        MinWidth="400"
+        DataContext="{imerge:ViewModel}"
+        SizeToContent="WidthAndHeight"
+        Name="WindowRoot"
+        x:Class="x0.imerge.MainWindow"
+        Title="IMerge">
+
+    <Design.DataContext>
+        <imerge:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Window.Styles>
+        <Style Selector="TextBlock.th">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="4,8"/>
+        </Style>
+        <Style Selector="Image">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="StretchDirection" Value="DownOnly"/>
+            <Setter Property="Margin" Value="4,8"/>
+        </Style>
+        <Style Selector="Button.take">
+            <Setter Property="Grid.Row" Value="2"/>
+            <Setter Property="Margin" Value="4,8"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Command" Value="{Binding DataContext.TakeRev, ElementName=WindowRoot, Mode=OneTime}"/>
+        </Style>
+    </Window.Styles>
+
+    <Window.DataTemplates>
+        <DataTemplate DataType="imerge:ImageRevs">
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,*,Auto">
+                <TextBlock Grid.Column="0" Grid.Row="0" Classes="th">Base</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="0" Classes="th">Local</TextBlock>
+                <TextBlock Grid.Column="2" Grid.Row="0" Classes="th">Remote</TextBlock>
+
+                <Image Grid.Column="0" Grid.Row="1" Source="{Binding Base.Bitmap, Mode=OneTime}" />
+                <Image Grid.Column="1" Grid.Row="1" Source="{Binding Local.Bitmap, Mode=OneTime}" />
+                <Image Grid.Column="2" Grid.Row="1" Source="{Binding Remote.Bitmap, Mode=OneTime}" />
+
+                <Button Grid.Column="0" Classes="take" CommandParameter="{Binding Base}">Take Base</Button>
+                <Button Grid.Column="1" Classes="take" CommandParameter="{Binding Local}">Take Local</Button>
+                <Button Grid.Column="2" Classes="take" CommandParameter="{Binding Remote}">Take Remote</Button>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="imerge:MinimalImageRevs">
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*,Auto">
+                <TextBlock Grid.Column="0" Grid.Row="0" Classes="th">Local</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="0" Classes="th">Remote</TextBlock>
+
+                <Image Grid.Column="0" Grid.Row="1" Source="{Binding Local.Bitmap, Mode=OneTime}" />
+                <Image Grid.Column="1" Grid.Row="1" Source="{Binding Remote.Bitmap, Mode=OneTime}" />
+
+                <Button Grid.Column="0" Classes="take" CommandParameter="{Binding Local}">Take Local</Button>
+                <Button Grid.Column="1" Classes="take" CommandParameter="{Binding Remote}">Take Remote</Button>
+            </Grid>
+        </DataTemplate>
+    </Window.DataTemplates>
+
+    <ContentControl Content="{Binding Images}" />
+</Window>
